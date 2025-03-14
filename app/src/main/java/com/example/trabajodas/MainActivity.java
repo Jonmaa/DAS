@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PokemonCardAdapter adapter;
     private List<PokemonCard> pokemonCardList;
-    private DrawerLayout drawerLayout;
     private Button addButton;
-    private DatabaseHelper databaseHelper; // Base de datos
+    private DatabaseHelper databaseHelper;
     private PokemonCardViewModel viewModel;
 
+    // Para lanzar la actividad de añadir carta
     private final ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -62,11 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Cargar idioma guardado en SharedPreferences
         loadLocale();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Cargar el fragmento de añadir carta en modo horizontal
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        // Solicitar permisos de notificación y lectura de imágenes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
                     PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(PokemonCardViewModel.class);
 
+        // Cargar cartas desde la base de datos
         List<PokemonCard> initialCards = databaseHelper.getAllCards();
         viewModel.setPokemonCardList(initialCards);
         viewModel.getPokemonCardList().observe(this, updatedCards -> {
@@ -101,11 +105,13 @@ public class MainActivity extends AppCompatActivity {
 
         addButton = findViewById(R.id.addButton);
 
+        // Ocultar botón de añadir en modo horizontal
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             addButton.setVisibility(View.GONE);
         } else {
             addButton.setVisibility(View.VISIBLE);
         }
+        // Lanzar actividad de añadir carta al hacer clic en el botón
         addButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, AddCardActivity.class);
             startActivityIntent.launch(intent);
@@ -117,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Button changeLanguageButton = findViewById(R.id.changeLanguageButton);
+        // Cambiar idioma al hacer clic en el botón
         changeLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Mostrar un diálogo de selección de idioma
     private void showLanguageDialog() {
         final String[] languages = {"English", "Español"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -145,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    // Cambiar el idioma de la aplicación
     private void setLocale(String lang) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
@@ -161,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
 
         updateTexts();
+        // Actualizar el texto del fragmento de añadir carta si está visible
         FragmentManager fragmentManager = getSupportFragmentManager();
         AddCardFragment fragment = (AddCardFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
         if (fragment != null) {
@@ -168,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Cargar el idioma guardado en SharedPreferences
     private void loadLocale() {
         String lang = getSharedPreferences("Settings", MODE_PRIVATE)
                 .getString("My_Lang", "en"); // Predeterminado: inglés
@@ -179,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 getBaseContext().getResources().getDisplayMetrics());
     }
 
+    // Actualizar los textos de la actividad
     private void updateTexts() {
         // Actualizar el título de la actividad
         setTitle(getString(R.string.app_name));
@@ -190,6 +202,5 @@ public class MainActivity extends AppCompatActivity {
         Button changeLanguageButton = findViewById(R.id.changeLanguageButton);
         changeLanguageButton.setText(getString(R.string.change_language));
 
-        // Actualizar otros textos visibles según sea necesario
     }
 }

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.File;
 import java.util.List;
 import android.graphics.Bitmap;
@@ -25,6 +24,7 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
         this.databaseHelper = databaseHelper;
     }
 
+    // Crear la vista de la carta
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,6 +38,7 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
         holder.nameTextView.setText(card.getName());
         holder.priceTextView.setText(String.valueOf(card.getPrice()));
 
+        // Cargar imagen
         if (card.getImagePath() != null && !card.getImagePath().isEmpty()) {
             File imgFile = new File(card.getImagePath());
             if (imgFile.exists()) {
@@ -49,6 +50,7 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
             holder.pokemonImageView.setImageResource(R.drawable.default_image); // Imagen por defecto si no hay ruta
         }
 
+        // Click largo para eliminar la carta
         holder.itemView.setOnLongClickListener(v -> {
             new AlertDialog.Builder(v.getContext())
                     .setTitle(v.getContext().getString(R.string.delete_card))
@@ -63,6 +65,7 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
             return true;
         });
 
+        // Click para editar la carta
         holder.itemView.setOnClickListener(v -> {
             View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_edit_card, null);
             EditText editName = dialogView.findViewById(R.id.editName);
@@ -92,6 +95,7 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
         return pokemonCardList.size();
     }
 
+    // Clase para manejar los elementos de la vista
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView, priceTextView;
         ImageView pokemonImageView;

@@ -34,6 +34,7 @@ public class AddCardFragment extends Fragment {
     private PokemonCardViewModel viewModel;
     private PokemonCardAdapter adapter;
 
+    // ActivityResultLauncher para seleccionar una imagen de la galería
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -53,6 +54,7 @@ public class AddCardFragment extends Fragment {
         databaseHelper = new DatabaseHelper(getActivity());
         viewModel = new ViewModelProvider(requireActivity()).get(PokemonCardViewModel.class);
 
+        // Observar la lista de cartas en el ViewModel
         viewModel.getPokemonCardList().observe(getViewLifecycleOwner(), cards -> {
             if (cards.isEmpty()) {
                 // Si la lista está vacía después de cambiar de idioma, recargar desde la base de datos
@@ -67,6 +69,7 @@ public class AddCardFragment extends Fragment {
         Button selectImageButton = view.findViewById(R.id.selectImageButton);
         imageView = view.findViewById(R.id.imageView);
 
+        // Añadir una carta
         saveButton.setOnClickListener(v -> {
             String name = editName.getText().toString();
             double price = Double.parseDouble(editPrice.getText().toString());
@@ -89,6 +92,7 @@ public class AddCardFragment extends Fragment {
 
         });
 
+        // Seleccionar una imagen de la galería
         selectImageButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
@@ -97,6 +101,7 @@ public class AddCardFragment extends Fragment {
         return view;
     }
 
+    // Obtener la ruta de la imagen seleccionada
     private String getPathFromUri(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
@@ -110,6 +115,7 @@ public class AddCardFragment extends Fragment {
         return null;
     }
 
+    // Enviar una notificación
     private void sendNotification(String cardName) {
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "card_channel";
@@ -129,6 +135,7 @@ public class AddCardFragment extends Fragment {
         notificationManager.notify(1, builder.build());
     }
 
+    // Actualizar los textos al cambiar de idioma
     public void updateTexts() {
         EditText editName = getView().findViewById(R.id.editName);
         EditText editPrice = getView().findViewById(R.id.editPrice);

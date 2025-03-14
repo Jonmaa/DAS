@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +25,7 @@ public class AddCardActivity extends AppCompatActivity {
     private ImageView cardImageView;
     private String cardImagePath;
 
+    // Lanzador para seleccionar imagen de la galería
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -48,11 +48,13 @@ public class AddCardActivity extends AppCompatActivity {
         selectImageButton = findViewById(R.id.selectImageButton);
         cardImageView = findViewById(R.id.imageView);
 
+        // Seleccionar imagen de la galería
         selectImageButton.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
         });
 
+        // Guardar la carta
         saveButton.setOnClickListener(view -> {
             String name = nameEditText.getText().toString();
             double price = Double.parseDouble(priceEditText.getText().toString());
@@ -62,6 +64,7 @@ public class AddCardActivity extends AppCompatActivity {
                 return;
             }
 
+            // Devolver los datos a la actividad principal
             Intent intent = new Intent();
             intent.putExtra("pokemonName", name);
             intent.putExtra("pokemonPrice", price);
@@ -71,6 +74,7 @@ public class AddCardActivity extends AppCompatActivity {
         });
     }
 
+    // Obtener la ruta de la imagen seleccionada
     private String getPathFromUri(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);

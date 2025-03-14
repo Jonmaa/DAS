@@ -29,6 +29,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Crea la base de datos
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
@@ -39,6 +40,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
+    // Actualiza la base de datos
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
@@ -46,6 +48,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Añade una carta a la base de datos
     public void insertCard(String name, double price, String imagePath, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -58,6 +61,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sendNotification(context, name);
     }
 
+    // Envía una notificación al añadir una carta
     private void sendNotification(Context context, String name) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channelId");
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
@@ -78,12 +82,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
         notificationManager.notify(1, builder.build());
     }
 
+    // Elimina una carta de la base de datos
     public void deleteCard(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_NAME + "=?", new String[]{name});
         db.close();
     }
 
+    // Actualiza una carta de la base de datos
     public void updateCard(String oldName, String newName, double newPrice, String newImagePath) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -94,6 +100,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Obtiene todas las cartas de la base de datos
     public List<PokemonCard> getAllCards() {
         List<PokemonCard> cardList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
