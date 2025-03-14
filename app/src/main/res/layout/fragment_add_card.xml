@@ -11,13 +11,15 @@
         android:id="@+id/editName"
         android:layout_width="314dp"
         android:layout_height="40dp"
-        android:hint="@string/name_hint" />
+        android:hint="@string/name_hint"
+        android:textColorHint="@color/textColor"/>
 
     <EditText
         android:id="@+id/editPrice"
         android:layout_width="260dp"
         android:layout_height="41dp"
         android:hint="@string/price_hint"
+        android:textColorHint="@color/textColor"
         android:inputType="numberDecimal" />
 
     <ImageView
