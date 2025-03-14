@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Cartas Pokémon</string>
+    <string name="save_button">Guardar</string>
+    <string name="name_hint">Nombre del Pokémon (Pikachu)</string>
+    <string name="price_hint">Precio de la carta (2.5)</string>
+    <string name="add_button">Añadir nueva carta</string>
+    <string name="change_language">Cambiar idioma</string>
+    <string name="delete_card">Eliminar carta</string>
+    <string name="are_you_sure">¿Estás seguro?</string>
+    <string name="edit_card">Editar carta</string>
+    <string name="cancel">Cancelar</string>
+    <string name="choose_language">Elige un idioma</string>
+    <string name="yes">Sí</string>
+    <string name="new_card_added">Nueva carta añadida: </string>
+    <string name="pokemon_card">Carta Pokémon</string>
+    <string name="select_picture">Seleccionar imagen</string>
+    <string name="fill_all_fields">Rellena todos los campos</string>
+</resources>

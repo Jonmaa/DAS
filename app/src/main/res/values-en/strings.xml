@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Pokemon Cards</string>
+    <string name="save_button">Save</string>
+    <string name="name_hint">Pokemon Name (Pikachu)</string>
+    <string name="price_hint">Card Price (2.5)</string>
+    <string name="add_button">Add new card</string>
+    <string name="change_language">Change Language</string>
+    <string name="delete_card">Delete card</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="edit_card">Edit card</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_language">Choose a language</string>
+    <string name="yes">Yes</string>
+    <string name="new_card_added">New card added: </string>
+    <string name="pokemon_card">Pokemon Card</string>
+    <string name="select_picture">Select picture</string>
+    <string name="fill_all_fields">Fill all fields</string>
+</resources>
