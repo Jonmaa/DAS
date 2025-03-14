@@ -1,14 +1,17 @@
 package com.example.trabajodas;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.AlertDialog;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.util.List;
@@ -43,11 +46,14 @@ public class PokemonCardAdapter extends RecyclerView.Adapter<PokemonCardAdapter.
             File imgFile = new File(card.getImagePath());
             if (imgFile.exists()) {
                 holder.pokemonImageView.setImageURI(Uri.fromFile(imgFile));
+                Log.d("PokemonCardAdapter", "Image loaded from path: " + card.getImagePath());
             } else {
                 holder.pokemonImageView.setImageResource(R.drawable.default_image); // Imagen por defecto si el archivo no existe
+                Log.d("PokemonCardAdapter", "Image file does not exist at path: " + card.getImagePath());
             }
         } else {
             holder.pokemonImageView.setImageResource(R.drawable.default_image); // Imagen por defecto si no hay ruta
+            Log.d("PokemonCardAdapter", "Image path is null or empty");
         }
 
         // Click largo para eliminar la carta

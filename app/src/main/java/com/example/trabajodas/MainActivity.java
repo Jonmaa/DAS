@@ -26,6 +26,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,13 +79,23 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.commit();
         }
 
-
         // Solicitar permisos de notificación y lectura de imágenes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
-                    PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+            // Para Android 13 (API 33) o superior
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Solicitar permisos para Android 13+
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.READ_MEDIA_IMAGES},
+                        new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_CODE);
+            }
+        } else {
+            // Para versiones anteriores a Android 13
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Solicitar permisos para versiones anteriores
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.POST_NOTIFICATIONS},
                         NOTIFICATION_PERMISSION_CODE);
             }
         }
@@ -90,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this); // Inicializar DB
 
         viewModel = new ViewModelProvider(this).get(PokemonCardViewModel.class);
+
+        if (viewModel.getPokemonCardList().getValue() != null) {
+            pokemonCardList = new ArrayList<>(viewModel.getPokemonCardList().getValue());
+        } else {
+            pokemonCardList = databaseHelper.getAllCards();
+            viewModel.setPokemonCardList(pokemonCardList);
+        }
 
         // Cargar cartas desde la base de datos
         List<PokemonCard> initialCards = databaseHelper.getAllCards();
@@ -130,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 showLanguageDialog();
             }
         });
-
     }
 
     // Mostrar un diálogo de selección de idioma
