@@ -12,7 +12,8 @@
         android:layout_width="314dp"
         android:layout_height="40dp"
         android:hint="@string/name_hint"
-        android:textColorHint="@color/textColor"/>
+        android:textColorHint="@color/textColor"
+        android:textColor="@color/textColor" />
 
     <EditText
         android:id="@+id/editPrice"
@@ -20,6 +21,7 @@
         android:layout_height="41dp"
         android:hint="@string/price_hint"
         android:textColorHint="@color/textColor"
+        android:textColor="@color/textColor"
         android:inputType="numberDecimal" />
 
     <ImageView
