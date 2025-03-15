@@ -90,6 +90,10 @@ public class AddCardFragment extends Fragment {
             // Send notification
             sendNotification(name);
 
+            editName.setText("");
+            editPrice.setText("");
+            imageView.setImageResource(R.drawable.default_image);
+
         });
 
         // Seleccionar una imagen de la galería
